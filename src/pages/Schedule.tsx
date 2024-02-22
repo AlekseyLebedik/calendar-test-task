@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ScheduleBody } from "widget/ScheduleBody/ScheduleBody";
 
 const ScheduleContainer = styled.main`
   min-height: 100vh;
@@ -7,7 +8,11 @@ const ScheduleContainer = styled.main`
 `;
 
 const Calendar = () => {
-  return <ScheduleContainer></ScheduleContainer>;
+  return (
+    <ScheduleContainer>
+      <ScheduleBody></ScheduleBody>
+    </ScheduleContainer>
+  );
 };
 
 export default Calendar;
