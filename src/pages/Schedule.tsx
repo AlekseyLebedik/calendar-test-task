@@ -6,8 +6,8 @@ const ScheduleContainer = styled.main`
   color: #a4afb2;
 `;
 
-const Calendar = () => {
+const Schedule = () => {
   return <ScheduleContainer></ScheduleContainer>;
 };
 
-export default Calendar;
+export default Schedule;
