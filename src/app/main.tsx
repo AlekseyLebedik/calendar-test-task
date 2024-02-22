@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Calendar from "../pages/Schedule.tsx";
 import Provider from "./providers.tsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
@@ -17,8 +18,12 @@ const GlobalStyle = createGlobalStyle`
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" Component={() => <Calendar />} />
+        </Routes>
+      </BrowserRouter>
       <GlobalStyle />
-      <Calendar />
     </Provider>
   </React.StrictMode>
 );

@@ -13,6 +13,7 @@ export default defineConfig({
       services: resolve(root, "services"),
       shared: resolve(root, "shared"),
       widget: resolve(root, "widget"),
+      assets: resolve(root, "app/assets"),
     },
   },
 });

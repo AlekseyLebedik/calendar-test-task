@@ -25,7 +25,8 @@
       "@interfaces/*": ["./src/@interfaces/*"],
       "context/*": ["src/context/*"],
       "shared/*": ["./src/shared/*"],
-      "widget/*": ["./src/widget/*"]
+      "widget/*": ["./src/widget/*"],
+      "assets/*": ["./src/app/assets/*"]
     }
   },
   "include": ["src"],
