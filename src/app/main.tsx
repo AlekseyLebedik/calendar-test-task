@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import Calendar from "../pages/Schedule.tsx";
+import Schedule from "../pages/Schedule.tsx";
 import Provider from "./providers.tsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" Component={() => <Calendar />} />
+          <Route path="/" Component={() => <Schedule />} />
         </Routes>
       </BrowserRouter>
       <GlobalStyle />

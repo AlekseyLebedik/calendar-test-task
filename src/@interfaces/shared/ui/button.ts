@@ -1,4 +1,10 @@
-export interface IButtonProps {
+import { StyledComponentsProps } from "shared/utils/typescript";
+
+export interface IButtonProps extends StyledComponentsProps {
   title: string;
-  styles: React.CSSProperties;
+  $backgroundHover: string;
+  $colorHover: string;
+  onClick: () => void;
+  type: "submit" | "button";
+  $disabled?: boolean;
 }

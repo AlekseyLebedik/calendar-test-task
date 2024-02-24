@@ -12,10 +12,18 @@
   </head>
   <body>
     <style>
+      .dragClass {
+        transform: rotate(3deg);
+        transition: transform 0.3s ease;
+      }
+      .dropClass {
+        transform: rotate(-6deg);
+        transition: transform 0.2s ease;
+      }
       .drop-preview {
         background-color: rgba(150, 150, 200, 0.1);
-        border: 1px dashed #abc;
-        margin: 5px 45px 5px 5px;
+        border: 1.5px dashed #04c3e2;
+        margin: 5px;
       }
       ::-webkit-scrollbar {
         width: 3px;
@@ -31,7 +39,8 @@
         border: 0px;
       }
     </style>
-    <div id="root"></div>
+    <div id="portalID" style="z-index: 10"></div>
+    <div id="root" style="z-index: 0"></div>
     <script type="module" src="/src/app/main.tsx"></script>
   </body>
 </html>

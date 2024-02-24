@@ -7,9 +7,12 @@ const ScheduleContainer = styled.main`
   color: #a4afb2;
 `;
 
-
 const Schedule = () => {
-  return <ScheduleContainer></ScheduleContainer>;
+  return (
+    <ScheduleContainer>
+      <ScheduleBody />
+    </ScheduleContainer>
+  );
 };
 
 export default Schedule;

@@ -32,3 +32,28 @@ export const sortedTime = <
 
   return cache;
 };
+
+export const scheduleKeys = (currentDay: string | number | Date) => {
+  const NUMBER_DAY = 35;
+  const startMonth = moment(currentDay).clone().startOf("month");
+  const endMonth = moment(currentDay).clone().endOf("month");
+
+  const countExtraDay = NUMBER_DAY - endMonth.daysInMonth();
+  const substract =
+    countExtraDay % 2 == 0 ? countExtraDay / 2 : (countExtraDay - 1) / 2 + 1;
+
+  const arrayDates = [];
+
+  for (
+    const date = startMonth.clone().subtract(substract, "day");
+    Number(date.format("x")) <
+    Number(endMonth.clone().add(countExtraDay - substract, "day"));
+    date.add(1, "day")
+  ) {
+    arrayDates.push(
+      date.format("x").concat("/").concat(date.clone().endOf("day").format("x"))
+    );
+  }
+
+  return arrayDates;
+};

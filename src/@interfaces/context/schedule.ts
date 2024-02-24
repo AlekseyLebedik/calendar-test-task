@@ -1,4 +1,4 @@
-export type SchedulesType = { [keyTimeDay: number]: Array<ISchedule> };
+export type SchedulesType = { [keyTimeDay: number | string]: Array<ISchedule> };
 
 export interface IScheduleContext {
   schedules: SchedulesType;

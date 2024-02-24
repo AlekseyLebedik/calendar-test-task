@@ -6,10 +6,9 @@ import {
 } from "@interfaces/shared/ui/input";
 
 const InputContainer = styled.input.attrs<InputContainerPropsType>((props) => ({
-  padding: props.padding ?? "2px 5px",
-  height: props.height ?? 50,
+  $padding: props.$padding ?? "2px 5px",
 }))`
-  width: ${(props) => props.width}px;
+  width: ${(props) => props.$width}px;
   transition: width 0.5s ease-in-out;
   border: none;
   border-bottom: 1px solid black;
@@ -18,14 +17,15 @@ const InputContainer = styled.input.attrs<InputContainerPropsType>((props) => ({
   overflow: hidden;
   text-overflow: ellipsis;
   background-color: inherit;
-  padding: ${(props) => props.padding};
+  padding: ${(props) => props.$padding};
 `;
 
 const InputBasic: FC<IInputBasic> = ({
   placeholder = "",
-  isTouchOutside,
+  isTouchOutside = null,
   onChangeOutside,
   width,
+  valueOutside,
   ...propsStyled
 }) => {
   const [value, setValue] = useState("");
@@ -34,18 +34,23 @@ const InputBasic: FC<IInputBasic> = ({
   const widthTouchExpr =
     isTouchOutside && isTouchOutside !== null ? isTouchOutside : isTouch;
 
+  const valueOutsideExpr = valueOutside || typeof valueOutside === "string";
+
   return (
     <InputContainer
       {...propsStyled}
-      value={value}
-      onChange={(event) => setValue(event.target.value)}
+      value={valueOutside ?? value}
+      onChange={(event) => {
+        if (valueOutsideExpr) onChangeOutside(event.target.value);
+        else setValue(event.target.value);
+      }}
       placeholder={placeholder}
-      width={widthTouchExpr ? width ?? 100 : 50}
+      $width={widthTouchExpr ? width ?? 100 : 50}
       onFocus={() => {
         if (isTouchOutside === null) setIsTouch(true);
       }}
       onBlur={() => {
-        onChangeOutside(value);
+        if (!valueOutsideExpr) onChangeOutside(value);
         if (isTouchOutside === null) setIsTouch(false);
       }}
     />

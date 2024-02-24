@@ -1,6 +1,4 @@
 import { PropsWithChildren, createContext, useReducer } from "react";
-import { sortedTime } from "shared/utils/time";
-import { MOCKSCHEDULE } from "./mock";
 import {
   SchedulesType,
   ISchedule,
@@ -8,8 +6,12 @@ import {
   IScheduleReducerAction,
   SCHEDULE_TYPE,
 } from "@interfaces/context/schedule";
+import { scheduleKeys } from "shared/utils/time";
 
-const initialState: SchedulesType = sortedTime(MOCKSCHEDULE);
+const initialState: SchedulesType = scheduleKeys(new Date()).reduce(
+  (acc, time) => ({ ...acc, [time]: [] }),
+  {}
+);
 
 const reducer = (state: SchedulesType, action: IScheduleReducerAction) => {
   switch (action.type) {
@@ -35,7 +37,7 @@ const reducer = (state: SchedulesType, action: IScheduleReducerAction) => {
 };
 
 const ScheduleContext = createContext<IScheduleContext>({
-  schedules: [],
+  schedules: {},
   addSchedule: () => {
     throw new Error("addSchedule function is not implemented");
   },

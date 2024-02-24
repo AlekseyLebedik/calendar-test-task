@@ -1,8 +1,9 @@
-import { CSSProperties } from "react";
+import { StyledComponentsProps } from "shared/utils/typescript";
 
-export interface IInputBasic extends CSSProperties {
+export interface IInputBasic extends StyledComponentsProps {
   placeholder?: string;
   isTouchOutside?: boolean;
+  valueOutside?: string;
   onChangeOutside: (value: string) => void;
   width?: number;
 }
