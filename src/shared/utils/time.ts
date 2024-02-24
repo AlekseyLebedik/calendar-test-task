@@ -1,4 +1,5 @@
 import moment, { type Moment, type unitOfTime } from "moment";
+import { START_TIME_INDEX } from "shared/global.contants";
 
 type ReturnedTimeObjType<TTime> = {
   [timeMarker: number]: Array<TTime>;
@@ -56,4 +57,9 @@ export const scheduleKeys = (currentDay: string | number | Date) => {
   }
 
   return arrayDates;
+};
+
+export const keyTimeParser = (key: string | number) => {
+  if (typeof key === "string") return Number(key.split("/")[START_TIME_INDEX]);
+  return key;
 };

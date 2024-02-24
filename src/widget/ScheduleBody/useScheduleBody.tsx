@@ -40,7 +40,7 @@ const useScheduleBody = () => {
   }, [schedules]);
 
   const onClickHandler = useCallback(
-    (containerID: number | string) => (condition: boolean) => {
+    (containerID: number) => (condition: boolean) => {
       setDialogProps({ isVisible: condition, containerID });
     },
     [setDialogProps]

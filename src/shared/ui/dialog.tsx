@@ -92,14 +92,22 @@ interface IDialogProps extends PropsWithChildren, StyledComponentsProps {
   title: string;
   isDisabled?: boolean;
   withoutBtn?: boolean;
+  onSubmit?: () => void;
 }
 
 const DialogStatless: FC<
   Pick<
     IDialogProps,
-    "onClose" | "children" | "title" | "isDisabled" | "withoutBtn"
+    "onClose" | "children" | "title" | "isDisabled" | "withoutBtn" | "onSubmit"
   >
-> = ({ children, onClose, title, isDisabled = false, withoutBtn }) => {
+> = ({
+  children,
+  onClose,
+  title,
+  isDisabled = false,
+  withoutBtn,
+  onSubmit,
+}) => {
   return (
     <DialogWrapper>
       <DialogContainer>
@@ -114,7 +122,9 @@ const DialogStatless: FC<
               title="submit"
               $backgroundColor="#b9b4c7"
               $width="100%"
-              onClick={() => console.log("hello")}
+              onClick={() => {
+                if (onSubmit) onSubmit();
+              }}
               type="submit"
               $disabled={isDisabled}
             />
@@ -132,6 +142,7 @@ const Dialog: FC<IDialogProps> = ({
   title,
   isDisabled,
   withoutBtn = false,
+  onSubmit,
 }) => {
   const portalRef = useRef<HTMLElement | null>(null);
   useEffect(() => {
@@ -149,6 +160,7 @@ const Dialog: FC<IDialogProps> = ({
             title={title}
             isDisabled={isDisabled}
             withoutBtn={withoutBtn}
+            onSubmit={onSubmit}
           >
             {children}
           </DialogStatless>,

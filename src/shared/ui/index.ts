@@ -4,6 +4,7 @@ import { Cell, ICellProps } from "./cell";
 import { Schedule, IScheduleProps, StickySchedule } from "./schedule";
 import { DatePicker, IDateProps } from "./datePicker";
 import { ColorPicker, IColorProps } from "./colorPicker";
+import { Teg } from "./teg";
 
 export {
   Button,
@@ -13,6 +14,7 @@ export {
   StickySchedule,
   DatePicker,
   ColorPicker,
+  Teg,
   type IColorProps,
   type IDateProps,
   type IScheduleProps,

@@ -7,6 +7,7 @@ import {
   SCHEDULE_TYPE,
 } from "@interfaces/context/schedule";
 import { scheduleKeys } from "shared/utils/time";
+import { keyTimeParser } from "shared/utils/time";
 
 const initialState: SchedulesType = scheduleKeys(new Date()).reduce(
   (acc, time) => ({ ...acc, [time]: [] }),
@@ -14,22 +15,26 @@ const initialState: SchedulesType = scheduleKeys(new Date()).reduce(
 );
 
 const reducer = (state: SchedulesType, action: IScheduleReducerAction) => {
-  switch (action.type) {
+  const { type, payload } = action;
+  switch (type) {
     case "ADD_SCHEDULE":
-      const addedResult = [...(state[action.payload.key] ?? [])];
-      addedResult.splice(action.payload.indexItem, 0, action.payload.schedule!);
+      const updatedState = Object.entries(state).reduce((acc, [key, value]) => {
+        if (keyTimeParser(key) === payload.key) {
+          value.splice(payload.indexItem, 0, payload.schedule!);
 
-      return {
-        ...state,
-        [action.payload.key]: addedResult,
-      };
+          return { ...acc, [key]: Array.from(new Set(value)) };
+        }
+        return { ...acc, [key]: value };
+      }, {});
+
+      return updatedState;
     case "REMOVE_SCHEDULE":
-      const deletedResult = [...(state[action.payload.key] ?? [])];
-      deletedResult.splice(action.payload.indexItem, 1);
+      const deletedResult = [...(state[payload.key] ?? [])];
+      deletedResult.splice(payload.indexItem, 1);
 
       return {
         ...state,
-        [action.payload.key!]: deletedResult,
+        [payload.key!]: deletedResult,
       };
     default:
       return state;

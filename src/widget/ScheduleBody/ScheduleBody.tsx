@@ -5,6 +5,7 @@ import { Cell, Schedule, StickySchedule } from "shared/ui";
 import { Container, Draggable, DropResult } from "react-smooth-dnd";
 import { StyledComponentsProps } from "shared/utils/typescript";
 import AddScheduleDialog from "widget/AddScheduleDialog/AddScheduleDialog";
+import { keyTimeParser } from "shared/utils/time";
 
 interface IScheduleBodyProps extends StyledComponentsProps {}
 
@@ -41,7 +42,7 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
             $backgroundColor={"#ebebeb"}
             day={container.toString()}
             childLength={Number(childElements[index])}
-            onClick={onClickHandler(container)}
+            onClick={onClickHandler(keyTimeParser(container))}
             $interaptHover={dialogProps.isVisible}
           >
             {/* <StickySchedule
@@ -87,7 +88,7 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
         isVisible={dialogProps.isVisible}
         containerID={dialogProps.containerID}
         onClose={onCloseDialog}
-      ></AddScheduleDialog>
+      />
     </ScheduleB>
   );
 };

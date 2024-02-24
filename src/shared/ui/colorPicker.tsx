@@ -1,12 +1,17 @@
-import { FC, useState } from "react";
+import { FC, useState, Fragment } from "react";
 import { SwatchesPicker, ColorResult } from "react-color";
 import Dialog from "./dialog";
 import styled from "styled-components";
 import { StyledComponentsProps } from "shared/utils/typescript";
 
-interface IColorProps extends StyledComponentsProps {}
+interface IColorProps extends StyledComponentsProps {
+  pickColor: string;
+  onPickColor: (color: string) => void;
+}
 
-const ColorPickerContainer = styled.div.attrs<IColorProps>((props) => ({
+const ColorPickerContainer = styled.div.attrs<
+  Omit<IColorProps, "onPickColor" | "pickColor">
+>((props) => ({
   $width: props.$width ?? 30,
   $height: props.$height ?? 30,
 }))`
@@ -22,16 +27,19 @@ const ColorPickerContainer = styled.div.attrs<IColorProps>((props) => ({
   }
 `;
 
-const ColorPicker: FC<IColorProps> = (props) => {
-  const [color, setColor] = useState<string>("black");
+const ColorPicker: FC<IColorProps> = ({
+  onPickColor,
+  pickColor,
+  ...propsStyled
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
+    <Fragment>
       <ColorPickerContainer
-        {...props}
+        {...propsStyled}
         onClick={() => setIsOpen(true)}
-        $backgroundColor={color}
+        $backgroundColor={pickColor}
       />
 
       <Dialog
@@ -43,7 +51,7 @@ const ColorPicker: FC<IColorProps> = (props) => {
         <div style={{ gridColumn: "1/3" }}>
           <SwatchesPicker
             onChangeComplete={(color: ColorResult) => {
-              setColor(color.hex);
+              onPickColor(color.hex);
               setIsOpen(false);
             }}
             width={400}
@@ -51,7 +59,7 @@ const ColorPicker: FC<IColorProps> = (props) => {
           />
         </div>
       </Dialog>
-    </div>
+    </Fragment>
   );
 };
 

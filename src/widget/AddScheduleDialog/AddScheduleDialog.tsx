@@ -1,10 +1,12 @@
-import React, { FC, memo, useState } from "react";
+import React, { FC, memo, useMemo, useState } from "react";
 import { DatePicker } from "shared/ui";
 import Dialog from "shared/ui/dialog";
 import { InputBasic } from "shared/ui/input";
 import styled from "styled-components";
 import { useFormSchedule } from "./useFormSchedule";
-import { Tegs } from "widget/Tegs";
+import { TegsCreater } from "widget/TegsCreater";
+import TegsDisplay from "widget/TegsDisplayer";
+import { START_TIME_INDEX } from "shared/global.contants";
 
 interface IAddScheduleDialogProps {
   containerID: number | string | null;
@@ -34,6 +36,7 @@ const ScheduleDialogContainer = styled.div`
 
   & .title-container,
   .tegs-container {
+    display: flex;
     gap: 30px;
     input {
       width: 100%;
@@ -49,13 +52,16 @@ const ScheduleDialogContainer = styled.div`
       }
     }
   }
-  & .date-container {
+  & .date-container,
+  .tegs-container {
     display: flex;
     gap: 30px;
+    align-items: center;
   }
 
   & .title-container,
   .date-container,
+  .tegs-container,
   .tegs-container {
     .label {
       color: #f39f5a;
@@ -77,20 +83,27 @@ const AddScheduleDialog: FC<IAddScheduleDialogProps> = ({
     changeEndValue,
     changeTegsValue,
     changeTitleValue,
-  } = useFormSchedule();
+    onDeleteTeg,
+    isDisabled,
+    onSubmitSchedule,
+  } = useFormSchedule({ containerID });
 
   return (
     <Dialog
       onClose={onClose}
       isVisible={isVisible}
+      onSubmit={onSubmitSchedule}
       title="Add schedule"
-      isDisabled={true}
+      isDisabled={isDisabled}
     >
       <ScheduleDialogContainer>
         <div className="title-container">
           <span className="label">Title</span>
           <InputBasic
-            onChangeOutside={(value) => changeTitleValue(value)}
+            valueOutside={state.title}
+            onChangeOutside={(value) => {
+              changeTitleValue(value);
+            }}
             isTouchOutside={true}
             placeholder="Typing your title ..."
           />
@@ -108,15 +121,11 @@ const AddScheduleDialog: FC<IAddScheduleDialogProps> = ({
             <DatePicker time={state.endDate} onChangeTime={changeEndValue} />
           </div>
         </div>
-        {/* <div className="tegs-container">
+        <div className="tegs-container">
           <span className="label">Tegs</span>
-          <InputBasic
-            onChangeOutside={(value) => changeTitleValue(value)}
-            isTouchOutside={true}
-            placeholder="Typing your tegs..."
-          />
-        </div> */}
-        <Tegs />
+          <TegsCreater onAddTegs={changeTegsValue} tegs={state.tegs} />
+        </div>
+        <TegsDisplay tegs={state.tegs} onDelete={onDeleteTeg} />
       </ScheduleDialogContainer>
     </Dialog>
   );
