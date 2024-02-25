@@ -1,4 +1,4 @@
-import React, { FC, memo, useMemo, useState } from "react";
+import React, { FC, memo } from "react";
 import { DatePicker } from "shared/ui";
 import Dialog from "shared/ui/dialog";
 import { InputBasic } from "shared/ui/input";
@@ -6,13 +6,7 @@ import styled from "styled-components";
 import { useFormSchedule } from "./useFormSchedule";
 import { TegsCreater } from "widget/TegsCreater";
 import TegsDisplay from "widget/TegsDisplayer";
-import { START_TIME_INDEX } from "shared/global.contants";
-
-interface IAddScheduleDialogProps {
-  containerID: number | string | null;
-  isVisible: boolean;
-  onClose: (condition: boolean) => void;
-}
+import { IAddScheduleDialogProps } from "@interfaces/widget/addScheduleDialog";
 
 const ScheduleDialogContainer = styled.div`
   display: flex;

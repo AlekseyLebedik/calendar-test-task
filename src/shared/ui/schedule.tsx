@@ -1,10 +1,6 @@
 import { FC } from "react";
-import { StyledComponentsProps } from "shared/utils/typescript";
 import styled from "styled-components";
-
-interface IScheduleProps extends StyledComponentsProps {
-  title: string;
-}
+import { IScheduleProps } from "@interfaces/shared/ui/schedule";
 
 const ScheduleContainer = styled.div.attrs<Omit<IScheduleProps, "title">>(
   (props) => ({
@@ -34,7 +30,12 @@ const ScheduleTitle = styled.div`
 
 const Schedule: FC<IScheduleProps> = ({ title, ...props }) => {
   return (
-    <ScheduleContainer {...props}>
+    <ScheduleContainer
+      {...props}
+      onClick={(event) => {
+        console.log("jsdjfsjdfjsdjfjsa");
+      }}
+    >
       <ScheduleTitle>{title}</ScheduleTitle>
     </ScheduleContainer>
   );

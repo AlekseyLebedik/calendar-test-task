@@ -33,8 +33,6 @@ const BContainer = styled.button.attrs<IButtonProps>((props) => ({
 const Button: FC<IButtonProps> = (props) => {
   const { title } = props;
 
-  console.log({ props });
-
   return <BContainer {...props}>{title}</BContainer>;
 };
 

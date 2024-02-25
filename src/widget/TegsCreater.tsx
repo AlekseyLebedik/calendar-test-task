@@ -46,13 +46,16 @@ const TegsCreater: FC<ITegsCreaterProps> = ({ onAddTegs }) => {
         width={200}
         isTouchOutside={true}
         placeholder="Typing your teg ..."
+        valueOutside={tegValue}
         onChangeOutside={(value: string) => setTegValue(value)}
       />
       <ColorPicker pickColor={colorValue} onPickColor={setColorValue} />
       <AddIcon
         onClick={() => {
-          if (colorValue && tegValue)
+          if (colorValue && tegValue) {
             onAddTegs({ color: colorValue, title: tegValue });
+            setTegValue("");
+          }
         }}
       />
     </TegsContainer>

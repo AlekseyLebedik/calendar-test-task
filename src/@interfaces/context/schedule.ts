@@ -1,13 +1,13 @@
-export type SchedulesType = { [keyTimeDay: number | string]: Array<ISchedule> };
+export type SchedulesType = { [keyTimeDay: number | string]: ISchedule[] };
 
 export interface IScheduleContext {
   schedules: SchedulesType;
   addSchedule: (
     keyTimeDay: number,
     schedule: ISchedule,
-    addedIndex: number
+    addedIndex: number | null
   ) => void;
-  removeSchedule: (keyTimeDay: number, deletedIndex: number) => void;
+  removeSchedule: (keyTimeDay: number, deletedIndex: number | null) => void;
 }
 
 export type TegsSchedule = {
@@ -27,8 +27,6 @@ export type SCHEDULE_TYPE = "ADD_SCHEDULE" | "REMOVE_SCHEDULE";
 export interface IScheduleReducerAction {
   type: Partial<SCHEDULE_TYPE>;
   payload: {
-    key: number;
-    indexItem: number;
-    schedule?: ISchedule;
+    newState: SchedulesType;
   };
 }

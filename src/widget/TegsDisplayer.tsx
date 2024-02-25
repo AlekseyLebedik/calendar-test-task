@@ -1,12 +1,7 @@
 import React, { FC, memo, useId } from "react";
-import { TegType } from "@interfaces/shared/ui/teg";
+import { ITegsProps } from "@interfaces/widget/tegsDisplayer";
 import styled from "styled-components";
 import { Teg } from "shared/ui";
-
-interface ITegsProps {
-  tegs: TegType[];
-  onDelete: (title: string) => void;
-}
 
 const TegsDisplayContainer = styled.div`
   display: grid;
@@ -21,6 +16,7 @@ const TegsDisplayContainer = styled.div`
 
 const TegsDisplay: FC<ITegsProps> = ({ tegs, onDelete }) => {
   const uniqID = useId();
+
   return (
     <TegsDisplayContainer>
       {tegs.map((teg) => {

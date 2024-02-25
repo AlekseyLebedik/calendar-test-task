@@ -6,7 +6,6 @@ import {
 import { TegType } from "@interfaces/shared/ui/teg";
 import { ISchedule, ScheduleContext } from "context/ScheduleContext";
 import { keyTimeParser } from "shared/utils/time";
-import moment from "moment";
 
 const initialState: IScheduleFormState = {
   title: "",
@@ -125,7 +124,7 @@ export const useFormSchedule = ({
       payload: { tegs: [], endDate: date!, startDate: date!, title: "" },
     });
 
-    const keyTime = Number(moment(state.startDate).format("x"));
+    const keyTime = keyTimeParser(containerID ?? new Date().getDate());
     addSchedule(keyTime, schedule, 0);
   };
 

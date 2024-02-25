@@ -1,13 +1,15 @@
-import React, { FC, useId, useMemo } from "react";
+import React, { FC, useId, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useScheduleBody } from "./useScheduleBody";
 import { Cell, Schedule, StickySchedule } from "shared/ui";
 import { Container, Draggable, DropResult } from "react-smooth-dnd";
-import { StyledComponentsProps } from "shared/utils/typescript";
 import AddScheduleDialog from "widget/AddScheduleDialog/AddScheduleDialog";
 import { keyTimeParser } from "shared/utils/time";
 
-interface IScheduleBodyProps extends StyledComponentsProps {}
+import {
+  IScheduleBodyProps,
+  IChildrensContainerProps,
+} from "@interfaces/widget/sheduleBody";
 
 const ScheduleB = styled.div.attrs<IScheduleBodyProps>((props) => ({
   $gridAutoRows: props.$gridAutoRows ?? "150px",
@@ -24,13 +26,16 @@ const ScheduleB = styled.div.attrs<IScheduleBodyProps>((props) => ({
 `;
 
 const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
+  const [stopPropagate, setStopPropagate] = useState(false);
   const uniqKey = useId();
+
   const {
     containerElements,
     childElements,
     onClickHandler,
     dialogProps,
     onCloseDialog,
+    setDropAccomulate,
   } = useScheduleBody();
 
   return (
@@ -38,11 +43,15 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
       {containerElements.map((container, index) => {
         return (
           <Cell
-            key={uniqKey + container}
+            key={uniqKey + index}
             $backgroundColor={"#ebebeb"}
             day={container.toString()}
-            childLength={Number(childElements[index])}
-            onClick={onClickHandler(keyTimeParser(container))}
+            childLength={Number(childElements[index].length)}
+            onClick={
+              !stopPropagate
+                ? onClickHandler(keyTimeParser(container))
+                : undefined
+            }
             $interaptHover={dialogProps.isVisible}
           >
             {/* <StickySchedule
@@ -53,14 +62,38 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
                 color="black"
               /> */}
             <Container
-              key={uniqKey + container}
-              dragClass="dragClass"
-              dropClass="dropClass"
-              removeOnDropOut={false}
+              style={{ display: "flex", flexDirection: "column", gap: 10 }}
               groupName="schedule_cell"
               orientation="vertical"
+              removeOnDropOut={true}
               onDrop={(params: DropResult) => {
-                console.log({ params });
+                const containerID = keyTimeParser(container);
+
+                if (params.addedIndex !== null) {
+                  setDropAccomulate((acc) => ({
+                    ...acc,
+                    addedIndex: params.addedIndex,
+                    addedContainer: containerID,
+                    dropObj: params.payload.dropObj,
+                  }));
+                }
+                if (params.removedIndex !== null) {
+                  setDropAccomulate((acc) => ({
+                    ...acc,
+                    deletedIndex: params.removedIndex,
+                    deleteContainer: containerID,
+                  }));
+                }
+              }}
+              getChildPayload={(indexChild) => {
+                const dropObj = childElements[index][indexChild];
+                return { dropObj, removedIndex: indexChild };
+              }}
+              onDragStart={() => {
+                setStopPropagate(true);
+              }}
+              onDragEnd={() => {
+                setStopPropagate(false);
               }}
               dragHandleSelector=".schedule-container"
               dropPlaceholder={{
@@ -69,17 +102,7 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
                 className: "drop-preview",
               }}
             >
-              <Draggable>
-                {childElements[index].map((child) => {
-                  return (
-                    <Schedule
-                      key={uniqKey + child.title}
-                      title={child.title}
-                      $backgroundColor={"white"}
-                    />
-                  );
-                })}
-              </Draggable>
+              <ChidrensContainer childrens={childElements[index]} />
             </Container>
           </Cell>
         );
@@ -91,6 +114,21 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
       />
     </ScheduleB>
   );
+};
+
+const ChidrensContainer: FC<IChildrensContainerProps> = ({ childrens }) => {
+  const uniqChildKey = useId();
+  return childrens.map((child, index) => {
+    return (
+      <Draggable>
+        <Schedule
+          key={uniqChildKey + index}
+          title={child.title}
+          $backgroundColor={"white"}
+        />
+      </Draggable>
+    );
+  });
 };
 
 export { ScheduleBody, type IScheduleBodyProps };

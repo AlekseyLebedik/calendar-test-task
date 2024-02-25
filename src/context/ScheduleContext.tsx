@@ -7,7 +7,6 @@ import {
   SCHEDULE_TYPE,
 } from "@interfaces/context/schedule";
 import { scheduleKeys } from "shared/utils/time";
-import { keyTimeParser } from "shared/utils/time";
 
 const initialState: SchedulesType = scheduleKeys(new Date()).reduce(
   (acc, time) => ({ ...acc, [time]: [] }),
@@ -18,24 +17,9 @@ const reducer = (state: SchedulesType, action: IScheduleReducerAction) => {
   const { type, payload } = action;
   switch (type) {
     case "ADD_SCHEDULE":
-      const updatedState = Object.entries(state).reduce((acc, [key, value]) => {
-        if (keyTimeParser(key) === payload.key) {
-          value.splice(payload.indexItem, 0, payload.schedule!);
-
-          return { ...acc, [key]: Array.from(new Set(value)) };
-        }
-        return { ...acc, [key]: value };
-      }, {});
-
-      return updatedState;
+      return payload.newState;
     case "REMOVE_SCHEDULE":
-      const deletedResult = [...(state[payload.key] ?? [])];
-      deletedResult.splice(payload.indexItem, 1);
-
-      return {
-        ...state,
-        [payload.key!]: deletedResult,
-      };
+      return payload.newState;
     default:
       return state;
   }
@@ -57,28 +41,50 @@ const ScheduleProvider = ({ children }: PropsWithChildren) => {
   const addSchedule = (
     keyTimeDay: number,
     schedule: ISchedule,
-    addedIndex: number
+    addedIndex: number | null
   ) => {
-    dispatch({
-      type: "ADD_SCHEDULE",
-      payload: {
-        key: keyTimeDay,
-        schedule,
-        indexItem: addedIndex,
-      },
-    });
+    if (addedIndex !== null) {
+      const updatedState = Object.entries(state).reduce((acc, [key, value]) => {
+        if (key.includes(keyTimeDay.toString())) {
+          value.splice(addedIndex, 0, schedule);
+          return { ...acc, [key]: Array.from(new Set(value)) };
+        }
+
+        return { ...acc, [key]: Array.from(new Set(value)) };
+      }, {});
+
+      dispatch({
+        type: "ADD_SCHEDULE",
+        payload: { newState: updatedState },
+      });
+    }
   };
 
-  const removeSchedule = (keyTimeDay: number, deletedIndex: number) => {
-    dispatch({
-      type: "REMOVE_SCHEDULE",
-      payload: { key: keyTimeDay, indexItem: deletedIndex },
-    });
+  const removeSchedule = (keyTimeDay: number, deletedIndex: number | null) => {
+    if (deletedIndex !== null) {
+      const updatedState = Object.entries(state).reduce((acc, [key, value]) => {
+        if (key.includes(keyTimeDay.toString())) {
+          value.splice(deletedIndex, 1);
+          return { ...acc, [key]: Array.from(new Set(value)) };
+        }
+
+        return { ...acc, [key]: Array.from(new Set(value)) };
+      }, {});
+
+      dispatch({
+        type: "REMOVE_SCHEDULE",
+        payload: { newState: updatedState },
+      });
+    }
   };
 
   return (
     <ScheduleContext.Provider
-      value={{ schedules: state, removeSchedule, addSchedule }}
+      value={{
+        schedules: state,
+        removeSchedule,
+        addSchedule,
+      }}
     >
       {children}
     </ScheduleContext.Provider>

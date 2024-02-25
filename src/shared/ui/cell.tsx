@@ -6,7 +6,7 @@ import { StyledComponentsProps } from "shared/utils/typescript";
 interface ICellProps extends StyledComponentsProps, React.PropsWithChildren {
   day: string;
   childLength: number;
-  onClick: (condition: boolean) => void;
+  onClick?: (condition: boolean) => void;
   $interaptHover: boolean;
 }
 
@@ -57,6 +57,8 @@ const CellHeader = styled.div`
   color: #676768;
   font-size: 14px;
   position: sticky;
+  top: 0;
+  z-index: 10;
 
   top: 0px;
   & span {
@@ -82,10 +84,12 @@ const Cell: FC<ICellProps> = ({
     );
   }, [headerDay]);
 
+  console.log({ childLength });
+
   return (
     <CellContainer
       $hoverCell={childLength < 1}
-      onClick={() => onClick(true)}
+      onClick={() => onClick && onClick(true)}
       {...props}
     >
       <CellHeader>
