@@ -4,14 +4,14 @@ import styled from "styled-components";
 import { Teg } from "shared/ui";
 
 const TegsDisplayContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-items: end;
+  display: flex;
+  flex-wrap: wrap;
   min-height: 50px;
   gap: 10px;
   align-items: flex-start;
   justify-content: flex-end;
   width: 100%;
+  max-width: 600px;
 `;
 
 const TegsDisplay: FC<ITegsProps> = ({ tegs, onDelete }) => {

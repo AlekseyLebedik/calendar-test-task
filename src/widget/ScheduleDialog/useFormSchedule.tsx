@@ -2,10 +2,11 @@ import { useContext, useEffect, useReducer, useState } from "react";
 import {
   IScheduleFormReducerAction,
   IScheduleFormState,
-} from "@interfaces/widget/addScheduleDialog";
+} from "@interfaces/widget/scheduleDialog";
 import { TegType } from "@interfaces/shared/ui/teg";
 import { ISchedule, ScheduleContext } from "context/ScheduleContext";
 import { keyTimeParser } from "shared/utils/time";
+import moment from "moment";
 
 const initialState: IScheduleFormState = {
   title: "",
@@ -47,6 +48,9 @@ const reducer = (
       };
     case "CLEAR_STATE":
       return { ...payload };
+
+    case "CHANGE_BEFORE_INITIAL_VALUE":
+      return { ...payload };
     default:
       return state;
   }
@@ -54,12 +58,23 @@ const reducer = (
 
 export const useFormSchedule = ({
   containerID,
+  initalValue,
+  onClose,
 }: {
   containerID: string | number | null;
+  initalValue: undefined | IScheduleFormState;
+  onClose: (condition: boolean) => void;
 }) => {
   const [date, setDate] = useState<Date | null>(null);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { addSchedule } = useContext(ScheduleContext);
+  const { addSchedule, updateSchedule } = useContext(ScheduleContext);
+
+  useEffect(() => {
+    dispatch({
+      type: "CHANGE_END_VALUE",
+      payload: { ...state, endDate: state.startDate },
+    });
+  }, [state.startDate]);
 
   useEffect(() => {
     if (containerID && typeof containerID === "string") {
@@ -80,6 +95,20 @@ export const useFormSchedule = ({
       });
     }
   }, [date]);
+
+  useEffect(() => {
+    if (initalValue) {
+      dispatch({
+        type: "CHANGE_BEFORE_INITIAL_VALUE",
+        payload: {
+          title: initalValue.title,
+          tegs: initalValue.tegs,
+          endDate: initalValue.endDate,
+          startDate: initalValue.startDate,
+        },
+      });
+    }
+  }, [initalValue]);
 
   const changeTitleValue = (title: string) => {
     dispatch({ type: "CHANGE_TITLE", payload: { ...state, title } });
@@ -124,8 +153,23 @@ export const useFormSchedule = ({
       payload: { tegs: [], endDate: date!, startDate: date!, title: "" },
     });
 
-    const keyTime = keyTimeParser(containerID ?? new Date().getDate());
-    addSchedule(keyTime, schedule, 0);
+    const keyTime = moment(state.startDate)
+      .startOf("day")
+      .format("x")
+      .concat("/")
+      .concat(moment(state.startDate).endOf("day").format("x"));
+
+    if (initalValue) {
+      const updatedSchedule = {
+        title: initalValue.title,
+        date_end: initalValue.endDate,
+        date_start: initalValue.startDate,
+        tegs: initalValue.tegs,
+      };
+      updateSchedule(keyTime, updatedSchedule as ISchedule, schedule);
+    } else {
+      addSchedule(keyTime, schedule, 0);
+    }
   };
 
   return {

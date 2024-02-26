@@ -1,4 +1,4 @@
-import React, { FC, memo } from "react";
+import React, { FC, useEffect } from "react";
 import { DatePicker } from "shared/ui";
 import Dialog from "shared/ui/dialog";
 import { InputBasic } from "shared/ui/input";
@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { useFormSchedule } from "./useFormSchedule";
 import { TegsCreater } from "widget/TegsCreater";
 import TegsDisplay from "widget/TegsDisplayer";
-import { IAddScheduleDialogProps } from "@interfaces/widget/addScheduleDialog";
+import { IScheduleDialogProps } from "@interfaces/widget/scheduleDialog";
 
 const ScheduleDialogContainer = styled.div`
   display: flex;
@@ -21,6 +21,7 @@ const ScheduleDialogContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     gap: 20px;
+    position: relative;
     label {
       font-size: 20px;
       font-weight: 500;
@@ -66,10 +67,11 @@ const ScheduleDialogContainer = styled.div`
   }
 `;
 
-const AddScheduleDialog: FC<IAddScheduleDialogProps> = ({
+const ScheduleDialog: FC<IScheduleDialogProps> = ({
   isVisible,
   onClose,
   containerID,
+  initalValue,
 }) => {
   const {
     state,
@@ -80,7 +82,7 @@ const AddScheduleDialog: FC<IAddScheduleDialogProps> = ({
     onDeleteTeg,
     isDisabled,
     onSubmitSchedule,
-  } = useFormSchedule({ containerID });
+  } = useFormSchedule({ containerID, initalValue, onClose });
 
   return (
     <Dialog
@@ -95,9 +97,7 @@ const AddScheduleDialog: FC<IAddScheduleDialogProps> = ({
           <span className="label">Title</span>
           <InputBasic
             valueOutside={state.title}
-            onChangeOutside={(value) => {
-              changeTitleValue(value);
-            }}
+            onChangeOutside={changeTitleValue}
             isTouchOutside={true}
             placeholder="Typing your title ..."
           />
@@ -115,6 +115,7 @@ const AddScheduleDialog: FC<IAddScheduleDialogProps> = ({
             <DatePicker time={state.endDate} onChangeTime={changeEndValue} />
           </div>
         </div>
+
         <div className="tegs-container">
           <span className="label">Tegs</span>
           <TegsCreater onAddTegs={changeTegsValue} tegs={state.tegs} />
@@ -125,4 +126,4 @@ const AddScheduleDialog: FC<IAddScheduleDialogProps> = ({
   );
 };
 
-export default memo(AddScheduleDialog);
+export default ScheduleDialog;

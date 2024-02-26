@@ -17,13 +17,18 @@ const GlobalStyle = createGlobalStyle`
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Provider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" Component={() => <Schedule />} />
-        </Routes>
-      </BrowserRouter>
-      <GlobalStyle />
-    </Provider>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          Component={() => (
+            <Provider>
+              <Schedule />
+            </Provider>
+          )}
+        />
+      </Routes>
+    </BrowserRouter>
+    <GlobalStyle />
   </React.StrictMode>
 );

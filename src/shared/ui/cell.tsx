@@ -1,19 +1,8 @@
-import React, { FC, useMemo } from "react";
+import { FC, useMemo } from "react";
 import styled from "styled-components";
 import moment from "moment";
-import { StyledComponentsProps } from "shared/utils/typescript";
-
-interface ICellProps extends StyledComponentsProps, React.PropsWithChildren {
-  day: string;
-  childLength: number;
-  onClick?: (condition: boolean) => void;
-  $interaptHover: boolean;
-}
-
-type ICellContainerProps = Omit<
-  ICellProps,
-  "day" | "childLength" | "onClick"
-> & { $hoverCell: boolean };
+import { keyTimeParser } from "shared/utils/time";
+import { ICellContainerProps, ICellProps } from "@interfaces/shared/ui/cell";
 
 const CellContainer = styled.div.attrs<ICellContainerProps>((props) => ({
   ...props,
@@ -75,7 +64,7 @@ const Cell: FC<ICellProps> = ({
   onClick,
   ...props
 }) => {
-  const headerDay = moment(Number(day.split("/")[0]));
+  const headerDay = moment(keyTimeParser(day));
 
   const isStratedOrEndMonth = useMemo(() => {
     return (
@@ -83,8 +72,6 @@ const Cell: FC<ICellProps> = ({
       headerDay.clone().endOf("month").isSame(headerDay)
     );
   }, [headerDay]);
-
-  console.log({ childLength });
 
   return (
     <CellContainer

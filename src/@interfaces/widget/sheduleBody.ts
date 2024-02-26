@@ -14,15 +14,16 @@ interface IDialogProps {
 }
 
 type dropAccomulateStateType = {
-  deleteContainer: number | null;
+  deleteContainer: string | null;
   deletedIndex: number | null;
-  addedContainer: number | null;
+  addedContainer: string | null;
   addedIndex: number | null;
   dropObj: ISchedule | null;
 };
 
 interface IChildrensContainerProps {
   childrens: ISchedule[];
+  containerID: string | number | null;
 }
 
 export {

@@ -1,24 +1,50 @@
 import moment from "moment";
-import { createContext, PropsWithChildren, useEffect, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { GetPublicHolidays } from "services/holidayServices";
+import { ScheduleSettingsContext } from "./ScheduleSettings";
 
 type HolidayType = {
   title: string;
   date_start: Date | string | number;
+  date_end: Date | string | number;
 };
 
-export const HolidayContext = createContext<HolidayType[]>([]);
+type HolidayContextType = {
+  holidays: { [keyTimeDay: string]: HolidayType };
+  setCountry: (value: string | null) => void;
+};
+
+export const HolidayContext = createContext<HolidayContextType>({
+  holidays: {},
+  setCountry: () => {
+    throw new Error("setCounrty doesnt implements");
+  },
+});
 
 export const HolidayProvider = ({ children }: PropsWithChildren) => {
-  const [holiday, setHoliday] = useState<HolidayType[]>([]);
+  const { currentDay } = useContext(ScheduleSettingsContext);
+  const [coutry, setCountry] = useState<string | null>(null);
+  const [holidays, setHoliday] = useState<{
+    [keyTimeDay: string]: HolidayType;
+  }>({});
 
   useEffect(() => {
-    const countryCode = moment().zoneName();
+    if (coutry) {
+      const years = currentDay.format("YYYY");
 
-    console.log({ countryCode }, window.location);
-  }, []);
+      GetPublicHolidays(coutry, years).then((holidays) => setHoliday(holidays));
+      setCountry(null);
+    }
+  }, [coutry]);
 
   return (
-    <HolidayContext.Provider value={holiday}>
+    <HolidayContext.Provider value={{ holidays, setCountry }}>
       {children}
     </HolidayContext.Provider>
   );

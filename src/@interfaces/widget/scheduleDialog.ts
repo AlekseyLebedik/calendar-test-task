@@ -1,9 +1,10 @@
 import { TegType } from "@interfaces/shared/ui/teg";
 
-interface IAddScheduleDialogProps {
+interface IScheduleDialogProps {
   containerID: number | string | null;
   isVisible: boolean;
   onClose: (condition: boolean) => void;
+  initalValue?: IScheduleFormState;
 }
 
 interface IScheduleFormState {
@@ -24,10 +25,11 @@ export type SCHEDULE_FORM_TYPE =
   | "CHANGE_TITLE"
   | "DELETE_TAG"
   | "CLEAR_STATE"
-  | "CHANGE_TAG";
+  | "CHANGE_TAG"
+  | "CHANGE_BEFORE_INITIAL_VALUE";
 
 export {
   type IScheduleFormReducerAction,
   type IScheduleFormState,
-  type IAddScheduleDialogProps,
+  type IScheduleDialogProps,
 };

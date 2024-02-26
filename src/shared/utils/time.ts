@@ -34,7 +34,7 @@ export const sortedTime = <
   return cache;
 };
 
-export const scheduleKeys = (currentDay: string | number | Date) => {
+export const scheduleKeys = (currentDay: string | number | Date | Moment) => {
   const NUMBER_DAY = 35;
   const startMonth = moment(currentDay).clone().startOf("month");
   const endMonth = moment(currentDay).clone().endOf("month");

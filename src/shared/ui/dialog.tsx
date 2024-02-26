@@ -112,7 +112,13 @@ const DialogStatless: FC<
     <DialogWrapper>
       <DialogContainer>
         <div className="title">{title}</div>
-        <div className="close-btn" onClick={() => onClose(false)}></div>
+        <div
+          className="close-btn"
+          onClick={(event) => {
+            event.stopPropagation();
+            onClose(false);
+          }}
+        />
         {children}
         {!withoutBtn && (
           <div className="submit-btn">

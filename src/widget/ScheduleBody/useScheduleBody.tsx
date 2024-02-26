@@ -5,6 +5,10 @@ import {
   dropAccomulateStateType,
   IDialogProps,
 } from "@interfaces/widget/sheduleBody";
+import { ScheduleSettingsContext } from "context/ScheduleSettings";
+import { HolidayContext } from "context/HolidayContext";
+import { useSearchParams } from "react-router-dom";
+import { returnedURLParams } from "shared/utils/params";
 
 const initalDropAccomulateState: dropAccomulateStateType = {
   deleteContainer: null,
@@ -15,6 +19,7 @@ const initalDropAccomulateState: dropAccomulateStateType = {
 };
 
 const useScheduleBody = () => {
+  const searchParams = useSearchParams();
   const [dropAccomulate, setDropAccomulate] = useState<dropAccomulateStateType>(
     initalDropAccomulateState
   );
@@ -26,8 +31,10 @@ const useScheduleBody = () => {
     Array<string | number>
   >([]);
   const [childElements, setChildElements] = useState<ISchedule[][]>([]);
-  const { schedules, addSchedule, removeSchedule } =
-    useContext(ScheduleContext);
+  const { addSchedule, removeSchedule } = useContext(ScheduleContext);
+  const { holidays } = useContext(HolidayContext);
+
+  const { scheduleSlice } = useContext(ScheduleSettingsContext);
 
   useEffect(() => {
     if (
@@ -51,9 +58,9 @@ const useScheduleBody = () => {
   }, [dropAccomulate]);
 
   useEffect(() => {
-    const elements: IScheduleElements = Object.keys(schedules).reduce(
-      (acc, container) => {
-        const child = schedules[container] ?? [];
+    const elements: IScheduleElements = Object.keys(scheduleSlice).reduce(
+      (acc, container: string) => {
+        let child = scheduleSlice[container] ?? [];
         return {
           child: [...acc.child, child],
           container: [...acc.container, container],
@@ -64,10 +71,10 @@ const useScheduleBody = () => {
 
     setContainerElements(elements.container);
     setChildElements(elements.child);
-  }, [schedules]);
+  }, [scheduleSlice]);
 
   const onClickHandler = useCallback(
-    (containerID: number) => (condition: boolean) => {
+    (containerID: string) => (condition: boolean) => {
       setDialogProps({ isVisible: condition, containerID });
     },
     [setDialogProps]
@@ -89,6 +96,7 @@ const useScheduleBody = () => {
     addSchedule,
     removeSchedule,
     setDropAccomulate,
+    holidays,
   };
 };
 

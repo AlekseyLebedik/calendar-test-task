@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ScheduleBody } from "widget/ScheduleBody/ScheduleBody";
+import { ScheduleHeader } from "widget/ScheduleHeader/ScheduleHeader";
 
 const ScheduleContainer = styled.main`
   min-height: 100vh;
@@ -9,7 +10,8 @@ const ScheduleContainer = styled.main`
 
 const Schedule = () => {
   return (
-    <ScheduleContainer>
+    <ScheduleContainer id="container_schedule">
+      <ScheduleHeader />
       <ScheduleBody />
     </ScheduleContainer>
   );

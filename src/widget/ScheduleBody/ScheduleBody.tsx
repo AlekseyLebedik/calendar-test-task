@@ -1,10 +1,10 @@
-import React, { FC, useId, useMemo, useState } from "react";
+import React, { FC, useId, useState } from "react";
 import styled from "styled-components";
 import { useScheduleBody } from "./useScheduleBody";
-import { Cell, Schedule, StickySchedule } from "shared/ui";
+import { Cell, StickySchedule } from "shared/ui";
 import { Container, Draggable, DropResult } from "react-smooth-dnd";
-import AddScheduleDialog from "widget/AddScheduleDialog/AddScheduleDialog";
-import { keyTimeParser } from "shared/utils/time";
+import AddScheduleDialog from "widget/ScheduleDialog/ScheduleDialog";
+import ScheduleWithDialog from "widget/ScheduleWithDialog";
 
 import {
   IScheduleBodyProps,
@@ -23,6 +23,7 @@ const ScheduleB = styled.div.attrs<IScheduleBodyProps>((props) => ({
   background-color: white;
   grid-template-columns: ${(props) => props.$gridTemplateColumns};
   grid-auto-rows: ${(props) => props.$gridAutoRows};
+  border-bottom: 4px solid white;
 `;
 
 const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
@@ -36,11 +37,13 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
     dialogProps,
     onCloseDialog,
     setDropAccomulate,
+    holidays,
   } = useScheduleBody();
 
   return (
     <ScheduleB {...props} className="schedule-container">
       {containerElements.map((container, index) => {
+        const isHolidayDayExist = holidays[container];
         return (
           <Cell
             key={uniqKey + index}
@@ -48,26 +51,28 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
             day={container.toString()}
             childLength={Number(childElements[index].length)}
             onClick={
-              !stopPropagate
-                ? onClickHandler(keyTimeParser(container))
-                : undefined
+              !stopPropagate ? onClickHandler(container.toString()) : undefined
             }
             $interaptHover={dialogProps.isVisible}
           >
-            {/* <StickySchedule
-                title="Header"
-                position="sticky"
-                top={0}
-                backgroundColor={"#ebebeb"}
-                color="black"
-              /> */}
+            {isHolidayDayExist && (
+              <StickySchedule
+                title={holidays[container].title}
+                $position="sticky"
+                $top={0}
+                $backgroundColor={"#ebebeb"}
+                $color="black"
+                tegs={[]}
+              />
+            )}
+
             <Container
               style={{ display: "flex", flexDirection: "column", gap: 10 }}
               groupName="schedule_cell"
               orientation="vertical"
               removeOnDropOut={true}
               onDrop={(params: DropResult) => {
-                const containerID = keyTimeParser(container);
+                const containerID = container.toString();
 
                 if (params.addedIndex !== null) {
                   setDropAccomulate((acc) => ({
@@ -102,7 +107,10 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
                 className: "drop-preview",
               }}
             >
-              <ChidrensContainer childrens={childElements[index]} />
+              <ChidrensContainer
+                childrens={childElements[index]}
+                containerID={container}
+              />
             </Container>
           </Cell>
         );
@@ -116,16 +124,15 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
   );
 };
 
-const ChidrensContainer: FC<IChildrensContainerProps> = ({ childrens }) => {
+const ChidrensContainer: FC<IChildrensContainerProps> = ({
+  childrens,
+  containerID,
+}) => {
   const uniqChildKey = useId();
   return childrens.map((child, index) => {
     return (
-      <Draggable>
-        <Schedule
-          key={uniqChildKey + index}
-          title={child.title}
-          $backgroundColor={"white"}
-        />
+      <Draggable key={uniqChildKey + index}>
+        <ScheduleWithDialog {...child} containerID={containerID} />
       </Draggable>
     );
   });
