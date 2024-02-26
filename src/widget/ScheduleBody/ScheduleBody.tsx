@@ -65,7 +65,7 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
                 tegs={[]}
               />
             )}
-            {/* //@ts-ignore */}
+            {/* @ts-ignore */}
             <Container
               style={{ display: "flex", flexDirection: "column", gap: 10 }}
               groupName="schedule_cell"
