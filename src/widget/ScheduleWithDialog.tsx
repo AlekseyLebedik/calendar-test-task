@@ -27,6 +27,7 @@ const ScheduleWithDialog: FC<IScheduleWithDialogProps> = ({
     >
       <Schedule title={schedule.title} tegs={schedule.tegs} />
       <UpdateDialog
+        title="Update schedule"
         isVisible={isOpenUpdateDialog}
         containerID={containerID}
         onClose={setIsOpenUpdateDialog}

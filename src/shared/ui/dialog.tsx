@@ -130,6 +130,7 @@ const DialogStatless: FC<
               $width="100%"
               onClick={() => {
                 if (onSubmit) onSubmit();
+                onClose(false);
               }}
               type="submit"
               $disabled={isDisabled}

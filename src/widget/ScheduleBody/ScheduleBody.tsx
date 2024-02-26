@@ -119,6 +119,7 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
         isVisible={dialogProps.isVisible}
         containerID={dialogProps.containerID}
         onClose={onCloseDialog}
+        title="Add schedule"
       />
     </ScheduleB>
   );

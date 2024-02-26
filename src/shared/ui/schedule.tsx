@@ -95,6 +95,12 @@ const ScheduleStickyTitle = styled.span`
   align-items: center;
   justify-content: space-between;
   border-bottom: 5px solid #f39f5a;
+  & .title {
+    max-width: 70%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   & svg {
     color: #f39f5a;
   }
@@ -104,7 +110,7 @@ const StickySchedule: FC<IScheduleProps> = ({ title, ...props }) => {
   return (
     <StickyScheduleStyled {...props}>
       <ScheduleStickyTitle>
-        {title}
+        <div className="title">{title}</div>
         <HolidaySvg />
       </ScheduleStickyTitle>
     </StickyScheduleStyled>

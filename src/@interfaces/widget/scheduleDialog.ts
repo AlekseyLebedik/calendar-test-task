@@ -5,6 +5,7 @@ interface IScheduleDialogProps {
   isVisible: boolean;
   onClose: (condition: boolean) => void;
   initalValue?: IScheduleFormState;
+  title: string;
 }
 
 interface IScheduleFormState {

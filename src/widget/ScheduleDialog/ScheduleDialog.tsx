@@ -72,6 +72,7 @@ const ScheduleDialog: FC<IScheduleDialogProps> = ({
   onClose,
   containerID,
   initalValue,
+  title,
 }) => {
   const {
     state,
@@ -89,7 +90,7 @@ const ScheduleDialog: FC<IScheduleDialogProps> = ({
       onClose={onClose}
       isVisible={isVisible}
       onSubmit={onSubmitSchedule}
-      title="Add schedule"
+      title={title}
       isDisabled={isDisabled}
     >
       <ScheduleDialogContainer>
