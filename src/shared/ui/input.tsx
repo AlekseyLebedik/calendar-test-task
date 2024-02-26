@@ -46,10 +46,10 @@ const InputBasic: FC<IInputBasic> = ({
       }}
       placeholder={placeholder}
       $width={widthTouchExpr ? width ?? 100 : 50}
-      onFocus={(event) => {
+      onFocus={(_) => {
         if (isTouchOutside === null) setIsTouch(true);
       }}
-      onBlur={(event) => {
+      onBlur={(_) => {
         if (!valueOutsideExpr) onChangeOutside(value);
         if (isTouchOutside === null) setIsTouch(false);
       }}

@@ -1,7 +1,7 @@
 import { OptionType } from "@interfaces/shared/ui/selector";
 import { HolidayContext } from "context/HolidayContext";
 import { useContext, useEffect, useState } from "react";
-import { SingleValue, ActionMeta } from "react-select";
+import { SingleValue } from "react-select";
 import { GetAllCountryServices } from "services/countryServices";
 
 export const useCountrySelector = () => {
@@ -15,10 +15,7 @@ export const useCountrySelector = () => {
     });
   }, []);
 
-  const onClickEvent = (
-    newValue: SingleValue<OptionType>,
-    actionMeta: ActionMeta<OptionType>
-  ) => {
+  const onClickEvent = (newValue: SingleValue<OptionType>) => {
     setOptionChosen(newValue);
     setCountry(newValue?.value ?? null);
   };

@@ -1,5 +1,5 @@
 import { DateSvg } from "assets/icons";
-import React, { FC, useRef, useState, forwardRef, ForwardedRef } from "react";
+import { FC, forwardRef } from "react";
 import styled from "styled-components";
 import { InputBasic } from "../../shared/ui/input";
 import Picker from "react-datepicker";
@@ -28,17 +28,15 @@ interface IDateProps {
 
 type DatePickerInputPropsType = {
   time: Date | null;
-  onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onClick: (time: Date | null) => void;
 };
 
 const DatePickerInput = forwardRef(
-  ({ time, onClick }: DatePickerInputPropsType, forwardRef) => (
-    <DateInputContainer onClick={onClick}>
+  ({ time, onClick }: DatePickerInputPropsType) => (
+    <DateInputContainer onClick={(_) => onClick(time)}>
       <InputBasic
         valueOutside={moment(time).format("DD MMM YY h:mm a")}
-        onChangeOutside={(value) => {
-          forwardRef.current = value;
-        }}
+        onChangeOutside={() => {}}
         width={200}
         isTouchOutside={true}
       />
@@ -49,7 +47,6 @@ const DatePickerInput = forwardRef(
 );
 
 const DatePicker: FC<IDateProps> = ({ time, onChangeTime }) => {
-  const inputRef = useRef<HTMLInputElement>();
   return (
     <Picker
       showTimeSelect
@@ -57,13 +54,7 @@ const DatePicker: FC<IDateProps> = ({ time, onChangeTime }) => {
       onChange={(date) => onChangeTime(date)}
       required
       withPortal
-      customInput={
-        <DatePickerInput
-          time={time}
-          onClick={onChangeTime}
-          forwardRef={inputRef}
-        />
-      }
+      customInput={<DatePickerInput time={time} onClick={onChangeTime} />}
     />
   );
 };

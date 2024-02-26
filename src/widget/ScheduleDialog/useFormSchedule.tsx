@@ -59,7 +59,6 @@ const reducer = (
 export const useFormSchedule = ({
   containerID,
   initalValue,
-  onClose,
 }: {
   containerID: string | number | null;
   initalValue: undefined | IScheduleFormState;

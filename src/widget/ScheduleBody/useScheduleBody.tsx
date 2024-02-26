@@ -7,8 +7,6 @@ import {
 } from "@interfaces/widget/sheduleBody";
 import { ScheduleSettingsContext } from "context/ScheduleSettings";
 import { HolidayContext } from "context/HolidayContext";
-import { useSearchParams } from "react-router-dom";
-import { returnedURLParams } from "shared/utils/params";
 
 const initalDropAccomulateState: dropAccomulateStateType = {
   deleteContainer: null,
@@ -19,7 +17,6 @@ const initalDropAccomulateState: dropAccomulateStateType = {
 };
 
 const useScheduleBody = () => {
-  const searchParams = useSearchParams();
   const [dropAccomulate, setDropAccomulate] = useState<dropAccomulateStateType>(
     initalDropAccomulateState
   );

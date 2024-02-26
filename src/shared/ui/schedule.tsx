@@ -1,4 +1,4 @@
-import { FC, useEffect, useId, useMemo, useState } from "react";
+import { FC, useId, useMemo } from "react";
 import styled from "styled-components";
 import { IScheduleProps } from "@interfaces/shared/ui/schedule";
 import { HolidaySvg } from "assets/icons";

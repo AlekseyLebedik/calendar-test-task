@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import { FC } from "react";
 import { DatePicker } from "shared/ui";
 import Dialog from "shared/ui/dialog";
 import { InputBasic } from "shared/ui/input";

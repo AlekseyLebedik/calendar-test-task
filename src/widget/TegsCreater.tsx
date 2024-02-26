@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { ColorPicker } from "shared/ui";
 import { InputBasic } from "shared/ui/input";
 import { ITegsCreaterProps } from "@interfaces/widget/tegsCreater";

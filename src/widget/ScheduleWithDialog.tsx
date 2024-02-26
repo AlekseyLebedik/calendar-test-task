@@ -1,4 +1,4 @@
-import React, { useState, FC, memo, useMemo } from "react";
+import { useState, FC, memo, useMemo } from "react";
 import { Schedule } from "shared/ui";
 import { IScheduleWithDialogProps } from "@interfaces/widget/scheduleWithDialog";
 import UpdateDialog from "widget/ScheduleDialog/ScheduleDialog";

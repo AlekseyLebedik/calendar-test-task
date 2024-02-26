@@ -17,7 +17,7 @@ type ScheduleSettingsContext = {
 
 export const ScheduleSettingsContext = createContext<ScheduleSettingsContext>({
   currentDay: moment(),
-  changeCurrentDay: (operation: "subs" | "add") => {
+  changeCurrentDay: (_: "subs" | "add") => {
     throw new Error("changeCurrentDay not implimented!");
   },
   scheduleSlice: {} as SchedulesType,

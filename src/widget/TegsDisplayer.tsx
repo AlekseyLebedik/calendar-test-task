@@ -1,4 +1,4 @@
-import React, { FC, memo, useId } from "react";
+import { FC, memo, useId } from "react";
 import { ITegsProps } from "@interfaces/widget/tegsDisplayer";
 import styled from "styled-components";
 import { Teg } from "shared/ui";

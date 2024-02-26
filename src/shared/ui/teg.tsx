@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import styled from "styled-components";
 import { ITegProps } from "@interfaces/shared/ui/teg";
 import { BacketSvg } from "assets/icons";

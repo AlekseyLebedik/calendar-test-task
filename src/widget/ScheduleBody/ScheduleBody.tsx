@@ -1,4 +1,4 @@
-import React, { FC, useId, useState } from "react";
+import { FC, useId, useState } from "react";
 import styled from "styled-components";
 import { useScheduleBody } from "./useScheduleBody";
 import { Cell, StickySchedule } from "shared/ui";
@@ -65,7 +65,7 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
                 tegs={[]}
               />
             )}
-
+            {/* //@ts-ignore */}
             <Container
               style={{ display: "flex", flexDirection: "column", gap: 10 }}
               groupName="schedule_cell"
@@ -131,6 +131,7 @@ const ChidrensContainer: FC<IChildrensContainerProps> = ({
   const uniqChildKey = useId();
   return childrens.map((child, index) => {
     return (
+      //@ts-ignore
       <Draggable key={uniqChildKey + index}>
         <ScheduleWithDialog {...child} containerID={containerID} />
       </Draggable>
