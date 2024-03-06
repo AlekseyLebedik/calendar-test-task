@@ -25,7 +25,7 @@ const ScheduleHeaderContainer = styled.div`
     &__right-controll {
       display: flex;
       align-items: center;
-      background-color: inherite;
+      background-color: inherit;
       user-select: none;
     }
     &__current-month {

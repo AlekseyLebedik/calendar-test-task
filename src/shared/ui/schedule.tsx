@@ -83,14 +83,13 @@ const StickyScheduleStyled = styled(ScheduleContainer)`
   height: 40px;
   z-index: 10;
   margin-bottom: 10px;
-  color: black;
+  color: ${(props) => props.$color ?? "currentcolor"} !important;
 `;
 
 const ScheduleStickyTitle = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: black !important;
   display: flex;
   align-items: center;
   justify-content: space-between;

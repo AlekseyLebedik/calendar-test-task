@@ -29,7 +29,7 @@ const CellContainer = styled.div.attrs<ICellContainerProps>((props) => ({
     }
     z-index: 0;
     transition: background-color, transform 0.4s ease-in-out;
-    & div {
+    & > div {
       ${props.$hoverCell ? `color: white;` : `color: #f39f5a;`}
     }
   }`}
@@ -42,7 +42,7 @@ const CellHeader = styled.div`
   align-items: center;
   font-weight: 800;
   gap: 20px;
-  background-color: inherite;
+  background-color: inherit;
   color: #676768;
   font-size: 14px;
   position: sticky;
