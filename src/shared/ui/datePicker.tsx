@@ -59,4 +59,5 @@ const DatePicker: FC<IDateProps> = ({ time, onChangeTime }) => {
   );
 };
 
-export { DatePicker, type IDateProps };
+export default DatePicker;
+export { type IDateProps, DatePicker };

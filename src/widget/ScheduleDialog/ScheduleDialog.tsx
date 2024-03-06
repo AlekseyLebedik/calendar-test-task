@@ -1,5 +1,4 @@
-import { FC } from "react";
-import { DatePicker } from "shared/ui";
+import { FC, Suspense, lazy } from "react";
 import Dialog from "shared/ui/dialog";
 import { InputBasic } from "shared/ui/input";
 import styled from "styled-components";
@@ -7,6 +6,8 @@ import { useFormSchedule } from "./useFormSchedule";
 import { TegsCreater } from "widget/TegsCreater";
 import TegsDisplay from "widget/TegsDisplayer";
 import { IScheduleDialogProps } from "@interfaces/widget/scheduleDialog";
+
+const DatePicker = lazy(() => import("shared/ui/datePicker"));
 
 const ScheduleDialogContainer = styled.div`
   display: flex;
@@ -106,14 +107,18 @@ const ScheduleDialog: FC<IScheduleDialogProps> = ({
         <div className="date-container">
           <div className="date-container__item">
             <span className="label">Start</span>
-            <DatePicker
-              time={state.startDate}
-              onChangeTime={changeStartValue}
-            />
+            <Suspense fallback={<div>Loading....</div>}>
+              <DatePicker
+                time={state.startDate}
+                onChangeTime={changeStartValue}
+              />
+            </Suspense>
           </div>
           <div className="date-container__item">
             <span className="label">End</span>
-            <DatePicker time={state.endDate} onChangeTime={changeEndValue} />
+            <Suspense fallback={<div>Loading....</div>}>
+              <DatePicker time={state.endDate} onChangeTime={changeEndValue} />
+            </Suspense>
           </div>
         </div>
 

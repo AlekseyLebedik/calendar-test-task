@@ -1,15 +1,19 @@
-import { FC, useId, useState } from "react";
+import { FC, lazy, Suspense, useId, useState } from "react";
 import styled from "styled-components";
 import { useScheduleBody } from "./useScheduleBody";
 import { Cell, StickySchedule } from "shared/ui";
 import { Container, Draggable, DropResult } from "react-smooth-dnd";
-import AddScheduleDialog from "widget/ScheduleDialog/ScheduleDialog";
-import ScheduleWithDialog from "widget/ScheduleWithDialog";
 
 import {
   IScheduleBodyProps,
   IChildrensContainerProps,
 } from "@interfaces/widget/sheduleBody";
+
+const AddScheduleDialog = lazy(
+  () => import("widget/ScheduleDialog/ScheduleDialog")
+);
+
+const ScheduleWithDialog = lazy(() => import("widget/ScheduleWithDialog"));
 
 const ScheduleB = styled.div.attrs<IScheduleBodyProps>((props) => ({
   $gridAutoRows: props.$gridAutoRows ?? "150px",
@@ -115,12 +119,14 @@ const ScheduleBody: FC<IScheduleBodyProps> = (props) => {
           </Cell>
         );
       })}
-      <AddScheduleDialog
-        isVisible={dialogProps.isVisible}
-        containerID={dialogProps.containerID}
-        onClose={onCloseDialog}
-        title="Add schedule"
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <AddScheduleDialog
+          isVisible={dialogProps.isVisible}
+          containerID={dialogProps.containerID}
+          onClose={onCloseDialog}
+          title="Add schedule"
+        />
+      </Suspense>
     </ScheduleB>
   );
 };
@@ -134,7 +140,9 @@ const ChidrensContainer: FC<IChildrensContainerProps> = ({
     return (
       //@ts-ignore
       <Draggable key={uniqChildKey + index}>
-        <ScheduleWithDialog {...child} containerID={containerID} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <ScheduleWithDialog {...child} containerID={containerID} />
+        </Suspense>
       </Draggable>
     );
   });
